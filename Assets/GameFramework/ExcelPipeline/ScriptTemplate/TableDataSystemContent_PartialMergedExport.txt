@@ -1,0 +1,44 @@
+﻿    #region #TableDataName#
+
+    private static Dictionary<int, DataSet<#TableDataName#>> #FieldName#;
+    public static IDictionary<int, DataSet<#TableDataName#>> #UpperCaseFieldName# => #FieldName#;
+
+    private static void Check#TableDataName#(int table)
+    {
+        if (#FieldName#.ContainsKey(table) == false)
+        {
+            if (Event_OnLoadOneTableData != null)
+            {
+                string sourceFile = $"{nameof(#TableDataName#)}_{table}";
+                string content = Event_OnLoadOneTableData(sourceFile);
+                List<#TableDataName#> list = JsonConvert.DeserializeObject<List<#TableDataName#>>(content);
+                if (list == null || list.Count <= 0)
+                {
+                    UnityEngine.Debug.LogError($"反序列化{sourceFile}_{table}.json文件不成功");
+                }
+                var dataSet = new DataSet<#TableDataName#>();
+                dataSet.SetData(list);
+                #FieldName#.Add(table, dataSet);
+            }
+        }
+    }
+
+    public static bool TryGetSingle#TableDataName#(int table, int id, out #TableDataName# data)
+    {
+        Check#TableDataName#(table);
+        return #FieldName#[table].TryGetDataByID(id, out data);
+    }
+
+    public static #TableDataName# GetSingle#TableDataName#(int table, int id)
+    {
+        Check#TableDataName#(table);
+        return #FieldName#[table].GetDataByID(id);
+    }
+
+    public static List<#TableDataName#> GetAll#TableDataName#(int table)
+    {
+        Check#TableDataName#(table);
+        return #FieldName#[table].GetAllData();
+    }
+
+    #endregion

@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using GameFramework;
+
+/// <summary>
+/// {0}
+/// </summary>
+[Serializable]
+public class {1} : TableDataBase
+{{
+    /// <summary>
+    /// 数据字典
+    /// </summary>
+    public Dictionary<string, {2}> dataDic = new Dictionary<string, {3}>();
+}}

@@ -1,0 +1,515 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BetterDebug</name>
+    </assembly>
+    <members>
+        <member name="T:GameFramework.Debug">
+            <summary>
+            日志输出类
+            </summary>
+        </member>
+        <member name="T:GameFramework.Debug.LogStyle">
+            <summary>
+            日志样式对象
+            </summary>
+        </member>
+        <member name="F:GameFramework.Debug.LogStyle.color">
+            <summary>
+            颜色，格式为16进制 000000
+            </summary>
+        </member>
+        <member name="F:GameFramework.Debug.LogStyle.size">
+            <summary>
+            字号
+            </summary>
+        </member>
+        <member name="F:GameFramework.Debug.LogStyle.bold">
+            <summary>
+            是否粗体
+            </summary>
+        </member>
+        <member name="F:GameFramework.Debug.LogStyle.italic">
+            <summary>
+            是否斜体
+            </summary>
+        </member>
+        <member name="T:GameFramework.Debug.LogType">
+            <summary>
+            日志类型
+            </summary>
+        </member>
+        <member name="F:GameFramework.Debug.LogType.Info">
+            <summary>
+            普通信息
+            </summary>
+        </member>
+        <member name="F:GameFramework.Debug.LogType.Warning">
+            <summary>
+            警告信息
+            </summary>
+        </member>
+        <member name="F:GameFramework.Debug.LogType.Error">
+            <summary>
+            错误信息
+            </summary>
+        </member>
+        <member name="F:GameFramework.Debug.stringBuilder">
+            <summary>
+            日志文本构造器
+            </summary>
+        </member>
+        <member name="F:GameFramework.Debug.dateTimeFormatTemplate">
+            <summary>
+            日期对象格式化字符串：年月日时分秒毫秒
+            </summary>
+        </member>
+        <member name="F:GameFramework.Debug.logLevelStringDict">
+            <summary>
+            日志级别的符号字典
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:GameFramework.Debug.DirectorySeparatorChars" -->
+        <member name="F:GameFramework.Debug.logDirectory">
+            <summary>
+            日志保存目录
+            </summary>
+        </member>
+        <member name="F:GameFramework.Debug.currentLogFile">
+            <summary>
+            本次启动游戏保存日志文件
+            </summary>
+        </member>
+        <member name="P:GameFramework.Debug.LogOutputEnable">
+            <summary>
+            日志输出文件开关，默认为false
+            true(为了获得更好的性能不会再调用UntiyEnging.Log，插件记录日志)
+            false(调用UnityEngine.Log，插件不再记录日志)，
+            </summary>
+        </member>
+        <member name="M:GameFramework.Debug.Init(System.Boolean,System.Int32)">
+            <summary>
+            初始化方法
+            </summary>
+            <param name="logCacheCount">设置日志缓存的数量，超过该数量将删除最早的日志，默认10条</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogI(System.Object,UnityEngine.Object,System.String,System.String,System.Int32)">
+            <summary>
+            输出Info类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="context">上下文对象</param>
+            <param name="memberName">该方法的调用方法名</param>
+            <param name="sourceFilePath">该方法的调用文件名</param>
+            <param name="sourceLineNumber">该方法的调用源码行</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogI(System.Object,System.String,UnityEngine.Object)">
+            <summary>
+            输出Info类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="tag">标签，用来搜索，过滤日志</param>
+            <param name="context">上下文对象</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogI(System.Object,System.String,GameFramework.Debug.LogStyle,UnityEngine.Object)">
+            <summary>
+            输出Info类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="tag">标签，用来搜索，过滤日志</param>
+            <param name="style">日志配置对象</param>
+            <param name="context">上下文对象</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogW(System.Object,UnityEngine.Object,System.String,System.String,System.Int32)">
+            <summary>
+            输出Warning类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="context">上下文对象</param>
+            <param name="memberName">该方法的调用方法名</param>
+            <param name="sourceFilePath">该方法的调用文件名</param>
+            <param name="sourceLineNumber">该方法的调用源码行</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogW(System.Object,System.String,UnityEngine.Object)">
+            <summary>
+            输出Warning类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="tag">标签，用来搜索，过滤日志</param>
+            <param name="context">上下文对象</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogW(System.Object,System.String,GameFramework.Debug.LogStyle,UnityEngine.Object)">
+            <summary>
+            输出Warning类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="tag">标签，用来搜索，过滤日志</param>
+            <param name="style">日志配置对象</param>
+            <param name="context">上下文对象</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogE(System.Object,UnityEngine.Object,System.String,System.String,System.Int32)">
+            <summary>
+            输出Error类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="context">上下文对象</param>
+            <param name="memberName">该方法的调用方法名</param>
+            <param name="sourceFilePath">该方法的调用文件名</param>
+            <param name="sourceLineNumber">该方法的调用源码行</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogE(System.Object,System.String,UnityEngine.Object)">
+            <summary>
+            输出Error类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="tag">标签，用来搜索，过滤日志</param>
+            <param name="context">上下文对象</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogE(System.Object,System.String,GameFramework.Debug.LogStyle,UnityEngine.Object)">
+            <summary>
+            输出Error类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="tag">标签，用来搜索，过滤日志</param>
+            <param name="style">日志配置对象</param>
+            <param name="context">上下文对象</param>
+        </member>
+        <member name="M:GameFramework.Debug.PrintLog(System.Object,System.String,GameFramework.Debug.LogStyle,UnityEngine.Object,GameFramework.Debug.LogType)">
+            <summary>
+            执行日志输出的方法
+            </summary>
+            <param name="message">String or object to be converted to string representation for display.</param>
+            <param name="tag"></param>
+            <param name="style"></param>
+            <param name="context">Object to which the message applies.</param>
+            <param name="logType">日志输出类别</param>
+        </member>
+        <member name="M:GameFramework.Debug.FormatColor32(UnityEngine.Color32)">
+            <summary>
+            将Color32转换为#FFFFFFFF格式
+            </summary>
+            <param name="color"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GameFramework.Debug.developerConsoleVisible">
+            <summary>
+            详见UnityEngine.Debug.developerConsoleVisible
+            </summary>
+        </member>
+        <member name="P:GameFramework.Debug.isDebugBuild">
+            <summary>
+            详见UnityEngine.Debug.isDebugBuild
+            </summary>
+        </member>
+        <member name="P:GameFramework.Debug.unityLogger">
+            <summary>
+            详见UnityEngine.Debug.logger
+            </summary>
+        </member>
+        <member name="M:GameFramework.Debug.Assert(System.Boolean)">
+            <summary>
+            详见UnityEngine.Debug.Assert
+            </summary>
+            <param name="condition"></param>
+        </member>
+        <member name="M:GameFramework.Debug.Assert(System.Boolean,System.String)">
+            <summary>
+            详见UnityEngine.Debug.Assert
+            </summary>
+            <param name="condition"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:GameFramework.Debug.Assert(System.Boolean,System.Object)">
+            <summary>
+            详见UnityEngine.Debug.Assert
+            </summary>
+            <param name="condition"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:GameFramework.Debug.Assert(System.Boolean,UnityEngine.Object)">
+            <summary>
+            详见UnityEngine.Debug.Assert
+            </summary>
+            <param name="condition"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:GameFramework.Debug.Assert(System.Boolean,System.String,UnityEngine.Object)">
+            <summary>
+            详见UnityEngine.Debug.Assert
+            </summary>
+            <param name="condition"></param>
+            <param name="message"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:GameFramework.Debug.Assert(System.Boolean,System.Object,UnityEngine.Object)">
+            <summary>
+            详见UnityEngine.Debug.Assert
+            </summary>
+            <param name="condition"></param>
+            <param name="message"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:GameFramework.Debug.AssertFormat(System.Boolean,System.String,System.Object[])">
+            <summary>
+            详见UnityEngine.Debug.AssertFormat
+            </summary>
+            <param name="condition"></param>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:GameFramework.Debug.AssertFormat(System.Boolean,UnityEngine.Object,System.String,System.Object[])">
+            <summary>
+            详见UnityEngine.Debug.AssertFormat
+            </summary>
+            <param name="condition"></param>
+            <param name="context"></param>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:GameFramework.Debug.DrawLine(UnityEngine.Vector3,UnityEngine.Vector3)">
+            <summary>
+            详见UnityEngine.Debug.DrawLine
+            </summary>
+            <param name="start"></param>
+            <param name="end"></param>
+        </member>
+        <member name="M:GameFramework.Debug.DrawLine(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color)">
+            <summary>
+            详见UnityEngine.Debug.DrawLine
+            </summary>
+            <param name="start"></param>
+            <param name="end"></param>
+            <param name="color"></param>
+        </member>
+        <member name="M:GameFramework.Debug.DrawLine(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color,System.Single)">
+            <summary>
+            详见UnityEngine.Debug.DrawLine
+            </summary>
+            <param name="start"></param>
+            <param name="end"></param>
+            <param name="color"></param>
+            <param name="duration"></param>
+        </member>
+        <member name="M:GameFramework.Debug.DrawLine(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color,System.Single,System.Boolean)">
+            <summary>
+            详见UnityEngine.Debug.DrawLine
+            </summary>
+            <param name="start"></param>
+            <param name="end"></param>
+            <param name="color"></param>
+            <param name="duration"></param>
+            <param name="depthTest"></param>
+        </member>
+        <member name="M:GameFramework.Debug.DrawRay(UnityEngine.Vector3,UnityEngine.Vector3)">
+            <summary>
+            详见UnityEngine.Debug.DrawRay
+            </summary>
+            <param name="start"></param>
+            <param name="dir"></param>
+        </member>
+        <member name="M:GameFramework.Debug.DrawRay(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color)">
+            <summary>
+            详见UnityEngine.Debug.DrawRay
+            </summary>
+            <param name="start"></param>
+            <param name="dir"></param>
+            <param name="color"></param>
+        </member>
+        <member name="M:GameFramework.Debug.DrawRay(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color,System.Single)">
+            <summary>
+            详见UnityEngine.Debug.DrawRay
+            </summary>
+            <param name="start"></param>
+            <param name="dir"></param>
+            <param name="color"></param>
+            <param name="duration"></param>
+        </member>
+        <member name="M:GameFramework.Debug.DrawRay(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color,System.Single,System.Boolean)">
+            <summary>
+            详见UnityEngine.Debug.DrawRay
+            </summary>
+            <param name="start"></param>
+            <param name="dir"></param>
+            <param name="color"></param>
+            <param name="duration"></param>
+            <param name="depthTest"></param>
+        </member>
+        <member name="M:GameFramework.Debug.Log(System.Object,System.String,System.String,System.Int32)">
+            <summary>
+            详见UnityEngine.Debug.Log
+            </summary>
+            <param name="message"></param>
+            <param name="memberName">该方法的调用方法名</param>
+            <param name="sourceFilePath">该方法的调用文件名</param>
+            <param name="sourceLineNumber">该方法的调用源码行</param>
+        </member>
+        <member name="M:GameFramework.Debug.Log(System.Object,UnityEngine.Object,System.String,System.String,System.Int32)">
+            <summary>
+            详见UnityEngine.Debug.Log
+            </summary>
+            <param name="message"></param>
+            <param name="context"></param>
+            <param name="memberName">该方法的调用方法名</param>
+            <param name="sourceFilePath">该方法的调用文件名</param>
+            <param name="sourceLineNumber">该方法的调用源码行</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogAssertion(System.Object)">
+            <summary>
+            详见UnityEngine.Debug.LogAssertion
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:GameFramework.Debug.LogAssertion(System.Object,UnityEngine.Object)">
+            <summary>
+            详见UnityEngine.Debug.LogAssertion
+            </summary>
+            <param name="message"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:GameFramework.Debug.LogAssertionFormat(System.String,System.Object[])">
+            <summary>
+            详见UnityEngine.Debug.LogAssertionFormat
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:GameFramework.Debug.LogAssertionFormat(UnityEngine.Object,System.String,System.Object[])">
+            <summary>
+            详见UnityEngine.Debug.LogAssertionFormat
+            </summary>
+            <param name="context"></param>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:GameFramework.Debug.LogError(System.Object,System.String,System.String,System.Int32)">
+            <summary>
+            详见UnityEngine.Debug.LogError
+            </summary>
+            <param name="message"></param>
+            <param name="memberName">该方法的调用方法名</param>
+            <param name="sourceFilePath">该方法的调用文件名</param>
+            <param name="sourceLineNumber">该方法的调用源码行</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogError(System.Object,UnityEngine.Object,System.String,System.String,System.Int32)">
+            <summary>
+            详见UnityEngine.Debug.LogError
+            </summary>
+            <param name="message"></param>
+            <param name="context"></param>
+            <param name="memberName">该方法的调用方法名</param>
+            <param name="sourceFilePath">该方法的调用文件名</param>
+            <param name="sourceLineNumber">该方法的调用源码行</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogErrorFormat(System.String,System.Object[])">
+            <summary>
+            详见UnityEngine.Debug.LogErrorFormat
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:GameFramework.Debug.LogErrorFormat(UnityEngine.Object,System.String,System.Object[])">
+            <summary>
+            详见UnityEngine.Debug.LogErrorFormat
+            </summary>
+            <param name="context"></param>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:GameFramework.Debug.LogException(System.Exception)">
+            <summary>
+            详见UnityEngine.Debug.LogException
+            </summary>
+            <param name="exception"></param>
+        </member>
+        <member name="M:GameFramework.Debug.LogException(System.Exception,UnityEngine.Object)">
+            <summary>
+            详见UnityEngine.Debug.LogException
+            </summary>
+            <param name="exception"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:GameFramework.Debug.LogFormat(System.String,System.Object[])">
+            <summary>
+            详见UnityEngine.Debug.LogFormat
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:GameFramework.Debug.LogFormat(UnityEngine.Object,System.String,System.Object[])">
+            <summary>
+            详见UnityEngine.Debug.LogFormat
+            </summary>
+            <param name="context"></param>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:GameFramework.Debug.LogWarning(System.Object,System.String,System.String,System.Int32)">
+            <summary>
+            详见UnityEngine.Debug.LogWarning
+            </summary>
+            <param name="message"></param>
+            <param name="memberName">该方法的调用方法名</param>
+            <param name="sourceFilePath">该方法的调用文件名</param>
+            <param name="sourceLineNumber">该方法的调用源码行</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogWarning(System.Object,UnityEngine.Object,System.String,System.String,System.Int32)">
+            <summary>
+            详见UnityEngine.Debug.LogWarning
+            </summary>
+            <param name="message"></param>
+            <param name="context"></param>
+            <param name="memberName">该方法的调用方法名</param>
+            <param name="sourceFilePath">该方法的调用文件名</param>
+            <param name="sourceLineNumber">该方法的调用源码行</param>
+        </member>
+        <member name="M:GameFramework.Debug.LogWarningFormat(System.String,System.Object[])">
+            <summary>
+            详见UnityEngine.Debug.LogWarningFormat
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:GameFramework.Debug.LogWarningFormat(UnityEngine.Object,System.String,System.Object[])">
+            <summary>
+            详见UnityEngine.Debug.LogWarningFormat
+            </summary>
+            <param name="context"></param>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="P:GameFramework.Debug.Tag">
+            <summary>
+            标签，用来搜索，过滤日志
+            </summary>
+        </member>
+        <member name="M:GameFramework.Debug.#ctor(System.String,GameFramework.Debug.LogStyle)">
+            <summary>
+            构造一个Debug对象，同时传入标签，用来搜索，过滤日志，使用该对象输出的日志都会带有Tag
+            可选参数style，决定日志输出的样式
+            </summary>
+            <param name="tag"></param>
+            <param name="style"></param>
+        </member>
+        <member name="M:GameFramework.Debug.I(System.Object,UnityEngine.Object)">
+            <summary>
+            输出Info类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="context">上下文对象</param>
+        </member>
+        <member name="M:GameFramework.Debug.W(System.Object,UnityEngine.Object)">
+            <summary>
+            输出Warning类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="context">上下文对象</param>
+        </member>
+        <member name="M:GameFramework.Debug.E(System.Object,UnityEngine.Object)">
+            <summary>
+            输出Error类别的信息
+            </summary>
+            <param name="message">消息内容</param>
+            <param name="context">上下文对象</param>
+        </member>
+    </members>
+</doc>

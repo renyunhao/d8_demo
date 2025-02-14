@@ -1,0 +1,11 @@
+using System;
+using GameFramework;
+using UnityEngine;
+
+/// <summary>
+/// {0}
+/// </summary>
+[Serializable]
+public class {1} : TableDataBase
+{{{2}
+}}

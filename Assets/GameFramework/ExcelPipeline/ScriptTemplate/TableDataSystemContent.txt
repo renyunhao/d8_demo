@@ -1,0 +1,42 @@
+﻿    #region #TableDataName#
+
+    private static DataSet<#TableDataName#> #FieldName#;
+    public static DataSet<#TableDataName#> #UpperCaseFieldName# => #FieldName#;
+
+    private static void Check#TableDataName#()
+    {
+        if (#FieldName# == null)
+        {
+            if (Event_OnLoadOneTableData != null)
+            {
+                string content = Event_OnLoadOneTableData(nameof(#TableDataName#));
+                List<#TableDataName#> list = JsonConvert.DeserializeObject<List<#TableDataName#>>(content);
+                if (list == null || list.Count <= 0)
+                {
+                    UnityEngine.Debug.LogError($"反序列化{nameof(#TableDataName#)}.json文件不成功");
+                }
+                #FieldName# = new DataSet<#TableDataName#>();
+                #FieldName#.SetData(list);
+            }
+        }
+    }
+
+    public static bool TryGetSingle#TableDataName#(int id, out #TableDataName# data)
+    {
+        Check#TableDataName#();
+        return #FieldName#.TryGetDataByID(id, out data);
+    }
+
+    public static #TableDataName# GetSingle#TableDataName#(int id)
+    {
+        Check#TableDataName#();
+        return #FieldName#.GetDataByID(id);
+    }
+
+    public static List<#TableDataName#> GetAll#TableDataName#()
+    {
+        Check#TableDataName#();
+        return #FieldName#.GetAllData();
+    }
+
+    #endregion

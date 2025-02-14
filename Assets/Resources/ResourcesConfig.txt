@@ -1,0 +1,11 @@
+UIGray|Material|Material|.mat
+Basecamp|GameObject|Prefab|.prefab
+BattleField|GameObject|Prefab|.prefab
+BattleUnit_1001|GameObject|Prefab/BattleUnit|.prefab
+PerformanceBrowser|GameObject|Prefab|.prefab
+BattleUI|GameObject|Prefab/UI/BattleUI|.prefab
+LoginUI|GameObject|Prefab/UI/LoginUI|.prefab
+ResourcesConfig|TextAsset||.txt
+GameFramwork/Sprite/OutlinePostEffect|Shader|Shader|.shader
+GameFramwork/Sprite/OutlinePreEffect|Shader|Shader|.shader
+GameFramework/UIGray|Shader|Shader|.shader

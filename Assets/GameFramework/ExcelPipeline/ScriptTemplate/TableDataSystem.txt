@@ -1,0 +1,27 @@
+using System;
+using System.Collections.Generic;
+using GameFramework;
+using Newtonsoft.Json;
+
+public static partial class #TableDataSystem#
+{{
+    public static event Func<string, string> Event_OnLoadOneTableData;
+
+    public static void LoadAllTableData()
+    {{
+{0}
+    }}
+
+    public static void ReloadAllTableData()
+    {{
+        UnloadAllTableData();
+        LoadAllTableData();
+    }}
+
+    public static void UnloadAllTableData()
+    {{
+{1}
+    }}
+
+{2}
+}}
