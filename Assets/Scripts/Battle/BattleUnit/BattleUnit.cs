@@ -10,6 +10,7 @@ public partial class BattleUnit : MonoBehaviour
     public GameObject entityObject;
     private BattleUnitData data = new BattleUnitData();
     private Animator animator;
+    private Transform unitTransform;
 
     public BattleUnitData Data => data;
 
@@ -18,6 +19,8 @@ public partial class BattleUnit : MonoBehaviour
     /// 与当前单位对应的纯逻辑对象
     /// </summary>
     public LogicBattleUnit LogicBattleUnit { get; private set; }
+
+    public Transform UnitTransform => unitTransform;
 
     /// <summary>
     /// 攻击释放点骨骼的世界坐标
@@ -32,6 +35,7 @@ public partial class BattleUnit : MonoBehaviour
 
     private void Awake()
     {
+        unitTransform = this.transform;
         animator = entityObject.GetComponent<Animator>();
     }
 

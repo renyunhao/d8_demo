@@ -58,7 +58,7 @@ public class LogicBattleUnitRuntimeData
     /// <summary>
     /// 技能信息容器，记录所有释放过的技能
     /// </summary>
-    public Dictionary<int, SkillData> skills = new Dictionary<int, SkillData>();
+    public Dictionary<int, SkillData> skills;
     /// <summary>
     /// 当前单位是否正在释放技能（有些技能释放过程需要单位一直维持施法状态）
     /// </summary>

@@ -353,6 +353,10 @@ public partial class LogicBattleSystem
 
     public void SkillCDUpdate(LogicBattleUnit unit)
     {
+        if (unit.runtimeData.skills == null)
+        {
+            return;
+        }
         foreach (var skillInfo in unit.runtimeData.skills.Values)
         {
             skillInfo.cdTimer += COMPUTE_DELTA_MILLISECOND;

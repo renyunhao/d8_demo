@@ -14,7 +14,7 @@ public partial class LogicBattleSystem
     /// <summary>
     /// 一次攻击相关引用记录
     /// </summary>
-    private Dictionary<LogicBattleUnit, LogicOnceAttackRelate> onceAttackRelateDic = new Dictionary<LogicBattleUnit, LogicOnceAttackRelate>();
+    private Dictionary<int, LogicOnceAttackRelate> onceAttackRelateDic = new Dictionary<int, LogicOnceAttackRelate>();
     private GenericPool<LogicOnceAttackRelate> onceAttackPool = new GenericPool<LogicOnceAttackRelate>();
     /// <summary>
     /// 攻击关联数据列表的临时容器
@@ -519,7 +519,7 @@ public partial class LogicBattleSystem
     /// <returns></returns>
     public LogicOnceAttackRelate GetOnceAttackRelateByAttacker(LogicBattleUnit attacker)
     {
-        onceAttackRelateDic.TryGetValue(attacker, out LogicOnceAttackRelate result);
+        onceAttackRelateDic.TryGetValue(attacker.index, out LogicOnceAttackRelate result);
         return result;
     }
 
@@ -549,17 +549,17 @@ public partial class LogicBattleSystem
     /// <returns></returns>
     public LogicOnceAttackRelate RecordMainAttackRelate(LogicBattleUnit attacker, LogicBattleUnit target)
     {
-        if (onceAttackRelateDic.ContainsKey(attacker) == false)
+        if (onceAttackRelateDic.ContainsKey(attacker.index) == false)
         {
             LogicOnceAttackRelate result = onceAttackPool.GetInstance();
             result.attacker = attacker;
             result.mainTarget = target;
-            onceAttackRelateDic.Add(attacker, result);
+            onceAttackRelateDic.Add(attacker.index, result);
             return result;
         }
         else
         {
-            LogicOnceAttackRelate result = onceAttackRelateDic[attacker];
+            LogicOnceAttackRelate result = onceAttackRelateDic[attacker.index];
             result.mainTarget = target;
             return result;
         }
@@ -1043,16 +1043,16 @@ public partial class LogicBattleSystem
         var list = GetAllAttackRelateByVictim(victim);
         foreach (var attackRelate in list)
         {
-            onceAttackRelateDic.Remove(attackRelate.attacker);
+            onceAttackRelateDic.Remove(attackRelate.attacker.index);
             attackRelate.Clear();
             onceAttackPool.RecycleInstance(attackRelate);
         }
 
         //单位死亡时，将它作为攻击方的一些攻击关系数据进行修改，它所攻击的目标
-        onceAttackRelateDic.TryGetValue(victim, out LogicOnceAttackRelate result);
+        onceAttackRelateDic.TryGetValue(victim.index, out LogicOnceAttackRelate result);
         if (result != null)
         {
-            onceAttackRelateDic.Remove(victim);
+            onceAttackRelateDic.Remove(victim.index);
             result.Clear();
             onceAttackPool.RecycleInstance(result);
         }
