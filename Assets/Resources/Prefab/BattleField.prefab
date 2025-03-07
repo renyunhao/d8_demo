@@ -335,6 +335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4073417461144900179}
   - component: {fileID: 4756963759245184714}
+  - component: {fileID: 5722398231456612636}
   m_Layer: 0
   m_Name: BattleField
   m_TagString: Untagged
@@ -380,10 +381,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackerBasecamp: {fileID: 5894925534372265676}
   defenderBasecamp: {fileID: 3273545145655625554}
-  battleUnitContainer: {fileID: 0}
+  battleUnitContainer: {fileID: 2079554378083509774}
   unitColorMaterials:
   - {fileID: 2100000, guid: b334e711f336a854bbe8105773587c79, type: 2}
   - {fileID: 2100000, guid: 5fe79f72ba747344cbf259ae8a13927d, type: 2}
+--- !u!114 &5722398231456612636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8835003803915747630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cb290a50b5d1ea4a8ce96329b9f0218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitPrefab: {fileID: 6457673528370725042, guid: cf9d4c50a8a2dd0489911541bc73331d, type: 3}
+  attackerBasecamp: {fileID: 5894925534372265676}
+  defenderBasecamp: {fileID: 3273545145655625554}
 --- !u!1 &8888081541995727387
 GameObject:
   m_ObjectHideFlags: 0

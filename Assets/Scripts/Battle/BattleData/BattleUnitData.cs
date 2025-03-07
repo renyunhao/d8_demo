@@ -6,4 +6,5 @@ public class BattleUnitData
 {
     public int id;
     public int hp;
+    public UnitCamp unitType;
 }

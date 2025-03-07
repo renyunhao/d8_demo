@@ -33,30 +33,6 @@ public partial class BattleSystem
 
     private static void ApplyAddBattleUnitFrameData(BattleFrameOutputData frameData)
     {
-        foreach (LogicBattleUnit attacker in frameData.addAttackerUnits)
-        {
-            if (attacker.runtimeData.currentStatus != BattleUnitState.Dead)
-            {
-                BattleUnit unit = battleField.SpawnBattleUnit(true, attacker.id, attacker.runtimeData.pos);
-                unit.BindLogicObject(attacker);
-                attackerList.Add(unit);
-                attackerDic.Add(attacker.index, unit);
-                //unit.gameObject.SetLayerRecursively("BattleUnit");
-                unit.PlayIdleAnimation(false, true);
-            }
-        }
-        foreach (LogicBattleUnit attacker in frameData.addDefenderUnits)
-        {
-            if (attacker.runtimeData.currentStatus != BattleUnitState.Dead)
-            {
-                BattleUnit unit = battleField.SpawnBattleUnit(false, attacker.id, attacker.runtimeData.pos);
-                unit.BindLogicObject(attacker);
-                defenderList.Add(unit);
-                defenderDic.Add(attacker.index, unit);
-                //unit.gameObject.SetLayerRecursively("BattleUnit");
-                unit.PlayIdleAnimation(false, true);
-            }
-        }
     }
 
     private static void UpdateAttacker()

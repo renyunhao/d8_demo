@@ -3,6 +3,8 @@ using GameFramework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using Unity.Entities;
 using UnityEngine;
 
 /// <summary>
@@ -133,6 +135,13 @@ public partial class LogicBattleSystem
     /// </summary>
     private BattleFrameOutputData currentFrameOutputData;
 
+    private LogicSystemGroup logicSystemGroup;
+    private SystemHandle spawnUnitSystemHandle;
+    private SystemHandle quadrantSystemHandle;
+    private SystemHandle unitStateSystemHandle;
+    private SystemHandle findTargetSystemHandle;
+    private SystemHandle unitSyncSystemHandle;
+
     public HashSet<LogicBattleUnit> ActiveAttackerList => aliveAttackerSet;
     public HashSet<LogicBattleUnit> ActiveDefenderList => aliveDefenderSet;
 
@@ -171,6 +180,17 @@ public partial class LogicBattleSystem
         //双方的城池需要构建为一个虚拟的BattleUnit
         attackerBasecamp = GetBasecampLogicBattleUnit(true, 10000, inputData.attackerBasecamp.transform.position.ToF64Vec3());
         defenderBasecamp = GetBasecampLogicBattleUnit(false, 10000, inputData.defenderBasecamp.transform.position.ToF64Vec3());
+        spawnUnitSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<UnitSpawnSystem>();
+        quadrantSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<QuadrantSystem>();
+        unitStateSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<UnitStateSystem>();
+        findTargetSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<FindTargetSystem>();
+        unitSyncSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<UnitSyncSystem>();
+        logicSystemGroup = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<LogicSystemGroup>();
+        logicSystemGroup.RemoveSystemFromUpdateList(spawnUnitSystemHandle); //关掉System的自动Update，改为手动调用Update
+        logicSystemGroup.RemoveSystemFromUpdateList(quadrantSystemHandle); //关掉System的自动Update，改为手动调用Update
+        logicSystemGroup.RemoveSystemFromUpdateList(unitStateSystemHandle); //关掉System的自动Update，改为手动调用Update
+        logicSystemGroup.RemoveSystemFromUpdateList(findTargetSystemHandle); //关掉System的自动Update，改为手动调用Update
+        logicSystemGroup.RemoveSystemFromUpdateList(unitSyncSystemHandle); //关掉System的自动Update，改为手动调用Update
     }
 
     #region 战斗阶段
@@ -202,6 +222,11 @@ public partial class LogicBattleSystem
                 if (OutputData.isEnd == false)
                 {
                     SpawnBattleUnit();
+                    spawnUnitSystemHandle.Update(World.DefaultGameObjectInjectionWorld.Unmanaged);
+                    quadrantSystemHandle.Update(World.DefaultGameObjectInjectionWorld.Unmanaged);
+                    unitStateSystemHandle.Update(World.DefaultGameObjectInjectionWorld.Unmanaged);
+                    findTargetSystemHandle.Update(World.DefaultGameObjectInjectionWorld.Unmanaged);
+                    unitSyncSystemHandle.Update(World.DefaultGameObjectInjectionWorld.Unmanaged);
                     BattleUnitCompute();
                     BulletCompute();
                     SkillCompute();

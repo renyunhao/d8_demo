@@ -1,5 +1,4 @@
 using GameFramework;
-using System.Collections.Generic;
 using UnityEngine;
 
 public partial class BattleUnit : MonoBehaviour
@@ -11,6 +10,7 @@ public partial class BattleUnit : MonoBehaviour
     private BattleUnitData data = new BattleUnitData();
     private Animator animator;
     private Transform unitTransform;
+    private bool isAttacker;
 
     public BattleUnitData Data => data;
 
@@ -33,17 +33,28 @@ public partial class BattleUnit : MonoBehaviour
         }
     }
 
+    public bool IsAttacker => isAttacker;
+
     private void Awake()
     {
         unitTransform = this.transform;
         animator = entityObject.GetComponent<Animator>();
     }
 
-    public void Initialize(int id, Vector3 pos)
+    public void Initialize(int id, Vector3 pos, bool isAttacker)
     {
         data.id = id;
+        this.isAttacker = isAttacker;
         this.transform.position = pos;
         currentStatus = BattleUnitState.Idle;
+        if (isAttacker)
+        {
+            unitTransform.GetComponentInChildren<SkinnedMeshRenderer>().material = AssetSystem.Load<Material>("Red");
+        }
+        else
+        {
+            unitTransform.GetComponentInChildren<SkinnedMeshRenderer>().material = AssetSystem.Load<Material>("Blue");
+        }
     }
 
     public void ReleaseLogicObject()
@@ -51,20 +62,6 @@ public partial class BattleUnit : MonoBehaviour
         if (LogicBattleUnit != null)
         {
             this.LogicBattleUnit = null;
-        }
-    }
-
-    public void BindLogicObject(LogicBattleUnit logicBattleUnit)
-    {
-        this.LogicBattleUnit = logicBattleUnit;
-        this.name = $"{logicBattleUnit.id}_{logicBattleUnit.index}";
-        if (logicBattleUnit.IsAttacker)
-        {
-            //切为进攻方表现
-        }
-        else
-        {
-            //切为防守方表现
         }
     }
 
@@ -89,15 +86,21 @@ public partial class BattleUnit : MonoBehaviour
         }
     }
 
-    public void PlayIdleAnimation(bool showIdle2, bool random = false)
-    {
-    }
-
     /// <summary>
     /// 尝试播放技能动画，因为不是所有的技能释放者都有技能动画
     /// </summary>
     /// <param name="skillId"></param>
     public void TryPlaySkillAnimation(int skillId)
     {
+    }
+
+    /// <summary>
+    /// 切换朝向，朝向是由当前单位与目标位置决定的，而不是由上一帧与这一帧的位置决定的
+    /// 这样可以避免前进过程中由于其他效果影响位置反复前进后退引起的疯狂摇摆
+    /// </summary>
+    /// <param name="targetPos"></param>
+    public void UpdateDirection(Vector3 targetPos)
+    {
+        this.entityObject.transform.forward = targetPos - this.entityObject.transform.position;
     }
 }

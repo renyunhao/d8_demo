@@ -2,6 +2,11 @@
 using GameFramework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Collections;
+using Unity.Entities;
+using UnityEngine;
+using Debug = GameFramework.Debug;
 
 public partial class LogicBattleSystem
 {
@@ -47,7 +52,7 @@ public partial class LogicBattleSystem
         LogicBattleUnit logicBattleUnit = logicBattleUnitPool.GetInstance();
 
         logicBattleUnit.id = id;
-        logicBattleUnit.runtimeData.currentStatus = BattleUnitState.Idle;
+        logicBattleUnit.runtimeData.currentStatus = BattleUnitState.MoveToBasecamp;
         logicBattleUnit.runtimeData.hp = logicBattleUnit.staticData.maxHP;
         logicBattleUnit.staticData.moveSpeed =  F64.FromInt(4);
         if (isAttacker)
@@ -74,50 +79,40 @@ public partial class LogicBattleSystem
 
         spawnTimer -= SPAWN_DELTA_TICKS;
 
-        foreach (var kvp in attackerBattleUnitSpawnDict)
+        var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        var battleFieldEntity = entityManager.CreateEntityQuery(typeof(BattleFieldComponentData)).ToEntityArray(Allocator.Temp).FirstOrDefault();
+        DynamicBuffer<UnitSpawnBufferData> buffer;
+        if (entityManager.HasBuffer<UnitSpawnBufferData>(battleFieldEntity))
         {
-            int id = kvp.Key;
-            int restCount = kvp.Value;
-            for (int i = 0; i < ColumnCapactiy; i++)
+            buffer = entityManager.GetBuffer<UnitSpawnBufferData>(battleFieldEntity);
+        }
+        else
+        {
+            buffer = entityManager.AddBuffer<UnitSpawnBufferData>(battleFieldEntity);
+        }
+
+        var keys = attackerBattleUnitSpawnDict.Keys.ToArray();
+        foreach (var key in keys)
+        {
+            int id = key;
+            int restCount = attackerBattleUnitSpawnDict[key];
+            int count = Mathf.Min(restCount, ColumnCapactiy);
+            if (count > 0)
             {
-                LogicBattleUnit logicBattleUnit = GetOneLogicBattleUnit(id, true);
-                float lerpValue = 0;
-                if (restCount > ColumnCapactiy)
-                {
-                    //当一次生成数量能填满整列时，坐标按顺序生成
-                    lerpValue = (float)i / ColumnCapactiy;
-                }
-                else
-                {
-                    //当一次生成数量不满整列时，居中生成，避免偏向一边不好看
-                    float offset = (ColumnCapactiy - restCount) / 2f;
-                    lerpValue = (float)i / ColumnCapactiy + offset;
-                }
-                logicBattleUnit.runtimeData.pos = InputData.attackerBasecamp.GetSpawnPosition(lerpValue);
-                AddCombatUnit(logicBattleUnit, true, true);
+                attackerBattleUnitSpawnDict[key] -= count;
+                buffer.Add(new UnitSpawnBufferData() { isAttacker = true, id = id, count = count });
             }
         }
-        foreach (var kvp in defenderBattleUnitSpawnDict)
+        keys = defenderBattleUnitSpawnDict.Keys.ToArray();
+        foreach (var key in keys)
         {
-            int id = kvp.Key;
-            int restCount = kvp.Value;
-            for (int i = 0; i < ColumnCapactiy; i++)
+            int id = key;
+            int restCount = defenderBattleUnitSpawnDict[key];
+            int count = Mathf.Min(restCount, ColumnCapactiy);
+            if (count > 0)
             {
-                LogicBattleUnit logicBattleUnit = GetOneLogicBattleUnit(id, false);
-                float lerpValue = 0;
-                if (restCount > ColumnCapactiy)
-                {
-                    //当一次生成数量能填满整列时，坐标按顺序生成
-                    lerpValue = (float)i / ColumnCapactiy;
-                }
-                else
-                {
-                    //当一次生成数量不满整列时，居中生成，避免偏向一边不好看
-                    float offset = (ColumnCapactiy - restCount) / 2f;
-                    lerpValue = (float)i / ColumnCapactiy + offset;
-                }
-                logicBattleUnit.runtimeData.pos = InputData.defenderBasecamp.GetSpawnPosition(lerpValue);
-                AddCombatUnit(logicBattleUnit, true, true);
+                defenderBattleUnitSpawnDict[key] -= count;
+                buffer.Add(new UnitSpawnBufferData() { isAttacker = false, id = id, count = count });
             }
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
+using Unity.Entities;
 
 public partial class BattleSystem
 {
@@ -31,10 +32,9 @@ public partial class BattleSystem
 
     public static BattleField BattleField => battleField;
 
-    public static void Initialize()
+    public static void Initialize(BattleField instance)
     {
-        GameObject battleFieldPrefab = AssetSystem.Load<GameObject>("BattleField");
-        battleField = Object.Instantiate(battleFieldPrefab).GetComponent<BattleField>();
+        battleField = instance;
     }
 
     public static void StartBattle()

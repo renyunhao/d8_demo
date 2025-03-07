@@ -4,7 +4,7 @@
 
     public void StatusEnter(BattleUnit current)
     {
-        current.PlayMoveAnimation();
+        BattleSystem.MoveToBasecampStatusEnter(current);
     }
 
     public void StatusUpdate(BattleUnit current)

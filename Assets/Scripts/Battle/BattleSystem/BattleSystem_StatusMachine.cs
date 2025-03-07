@@ -51,43 +51,26 @@ public partial class BattleSystem
         }
     }
 
-    #region Idle
-
     public static void IdleStatusEnter(BattleUnit battleUnit)
     {
         battleUnit.IdleStatusEnter();
     }
 
-    #endregion
-
-    #region MoveToAttack
-
     public static void MoveToAttackStatusEnter(BattleUnit battleUnit)
     {
-        BattleUnit target = GetTargetByAttacker(battleUnit);
         battleUnit.PlayMoveAnimation();
     }
-
-    #endregion
-
-    #region Attacking
 
     public static void AttackingStatusEnter(BattleUnit battleUnit)
     {
         battleUnit.attackedNumber = 0;
-        BattleUnit target = GetTargetByAttacker(battleUnit);
-        battleUnit.AttackingStatusEnter(target);
+        battleUnit.AttackingStatusEnter();
     }
 
     public static void AttackingStatusUpdate(BattleUnit battleUnit)
     {
-        BattleUnit target = GetTargetByAttacker(battleUnit);
-        battleUnit.AttackingStatusUpdate(target);
+        battleUnit.AttackingStatusUpdate();
     }
-
-    #endregion
-
-    #region AttackWait
 
     public static void AttackWaitStatusEnter(BattleUnit battleUnit)
     {
@@ -97,16 +80,24 @@ public partial class BattleSystem
     {
     }
 
-    #endregion
-
-    #region DeadStatus
-
-
     public static void DeadStatusEnter(BattleUnit battleUnit)
     {
     }
 
-    #endregion
+    public static void MoveToBasecampStatusEnter(BattleUnit battleUnit)
+    {
+        battleUnit.PlayMoveAnimation();
+        Vector3 targetPos = battleUnit.transform.position;
+        if (battleUnit.IsAttacker)
+        {
+            targetPos.x += 1;
+        }
+        else
+        {
+            targetPos.x -= 1;
+        }
+        battleUnit.UpdateDirection(targetPos);
+    }
 
     #region 受伤、死亡
 

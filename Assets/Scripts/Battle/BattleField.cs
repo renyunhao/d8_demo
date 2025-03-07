@@ -1,7 +1,6 @@
 using Cysharp.Text;
 using FixPointUnity;
 using GameFramework;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,7 +17,7 @@ public class BattleField : MonoBehaviour
     {
         if (battleUnitPoolDict.TryGetValue(battleUnit.ID, out var pool))
         {
-            pool.GetInstance();
+            pool.RecycleInstance(battleUnit);
         }
     }
 
@@ -26,12 +25,12 @@ public class BattleField : MonoBehaviour
     {
         if (battleUnitPoolDict.TryGetValue(id, out var pool) == false)
         {
-            pool = new MonoBehaviourPool<BattleUnit>(AssetSystem.Load<GameObject>(ZString.Concat("BattleUnit_", id)).GetComponent<BattleUnit>(), battleUnitContainer, GameNode.PoolRoot);
+            pool = new MonoBehaviourPool<BattleUnit>(AssetSystem.Load<GameObject>(ZString.Concat("BattleUnit_", id)).GetComponent<BattleUnit>(), GameNode.PoolRoot, GameNode.PoolRoot);
             battleUnitPoolDict[id] = pool;
         }
         var battleUnit = pool.GetInstance();
-        battleUnit.GetComponentInChildren<SkinnedMeshRenderer>().material = unitColorMaterials[isAttacker ? 0 : 1];
-        battleUnit.Initialize(id, pos.ToVector3());
+        battleUnit.Initialize(id, pos.ToVector3(), isAttacker);
+
         return battleUnit;
     }
 }

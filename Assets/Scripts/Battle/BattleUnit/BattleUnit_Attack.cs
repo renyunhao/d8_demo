@@ -24,7 +24,7 @@ public partial class BattleUnit
     private Tween beAttackedTween;
     public MaterialPropertyBlock MaterialPropertyBlock { get; private set; }
 
-    public void AttackingStatusEnter(BattleUnit victim)
+    public void AttackingStatusEnter()
     {
         if (animator != null)
         {
@@ -32,7 +32,7 @@ public partial class BattleUnit
         }
     }
 
-    public void AttackingStatusUpdate(BattleUnit victim)
+    public void AttackingStatusUpdate()
     {
     }
 
