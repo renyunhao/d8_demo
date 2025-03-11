@@ -12,12 +12,13 @@ public struct QuadrantData
 {
     public Entity entity;
     public F64Vec3 position;
+    public UnitCamp unitCamp;
 }
 
 [UpdateInGroup(typeof(LogicSystemGroup))]
 public partial struct QuadrantSystem : ISystem
 {
-    public const int QuadrantCellSize = 10;
+    public const int QuadrantCellSize = 20;
     public const int QuadrantZMultiplier = 1000;
 
     public static NativeParallelMultiHashMap<int, QuadrantData> quadrantMultiHashMap;
@@ -43,10 +44,12 @@ public partial struct QuadrantSystem : ISystem
             quadrantMultiHashMap = new NativeParallelMultiHashMap<int, QuadrantData>(query.CalculateEntityCount(), Allocator.Persistent);
         }
 
-        new SetQuadrantDataHashMapJob()
+        var jobHandle = new SetQuadrantDataHashMapJob()
         {
             quadrantMultiHashMap = quadrantMultiHashMap.AsParallelWriter()
-        }.ScheduleParallel();
+        }.Schedule(state.Dependency);
+
+        jobHandle.Complete();
     }
 
     public static int GetPositionHashMapKey(F64Vec3 position)
@@ -60,13 +63,15 @@ public partial struct QuadrantSystem : ISystem
     private partial struct SetQuadrantDataHashMapJob : IJobEntity
     {
         public NativeParallelMultiHashMap<int, QuadrantData>.ParallelWriter quadrantMultiHashMap;
+
         public void Execute(UnitDataAspect unitData)
         {
             int hashMapKey = GetPositionHashMapKey(unitData.Position);
             quadrantMultiHashMap.Add(hashMapKey, new QuadrantData()
             {
                 entity = unitData.entity,
-                position = unitData.Position
+                position = unitData.Position,
+                unitCamp = unitData.UnitCamp
             });
         }
     }

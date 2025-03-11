@@ -97,6 +97,8 @@ public partial struct UnitSpawnSystem : ISystem
                                 position.value = F64Vec3.Lerp(aspect.battleFieldData.ValueRO.defenderSpawnPointB, aspect.battleFieldData.ValueRO.defenderSpawnPointA, lerpValue);
                             }
 
+                            position.value.X /= 3;
+
                             var battleUnit = Object.Instantiate(prefabData.prefab).GetComponent<BattleUnit>();
                             //var battleUnit = BattleSystem.BattleField.SpawnBattleUnit(data.isAttacker, id, position.value);
                             battleUnit.Initialize(id, position.value.ToVector3(), data.isAttacker);

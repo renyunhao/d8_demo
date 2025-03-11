@@ -2,8 +2,6 @@ using FixPointUnity;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public enum FindTargetType
 {
@@ -40,9 +38,7 @@ public partial struct FindTargetSystem : ISystem
         {
             quadrantMultiHashMap = QuadrantSystem.quadrantMultiHashMap,
             targetHashMap = targetHashMap.AsParallelWriter(),
-            unitCampLookup = SystemAPI.GetComponentLookup<UnitStaticData>(true)
-        }.Schedule(state.Dependency);
-
+        }.ScheduleParallel(state.Dependency);
 
         burstJobHandle.Complete();
 
@@ -77,7 +73,6 @@ public partial struct FindTargetSystem : ISystem
     {
         [ReadOnly] public NativeParallelMultiHashMap<int, QuadrantData> quadrantMultiHashMap;
         public NativeParallelMultiHashMap<int, Entity>.ParallelWriter targetHashMap;
-        [ReadOnly] public ComponentLookup<UnitStaticData> unitCampLookup;
 
         public void Execute([ReadOnly] UnitDataAspect unitData, [ReadOnly] NeedFindTargetTag needFindTargetTag)
         {
@@ -113,8 +108,7 @@ public partial struct FindTargetSystem : ISystem
                 F64Vec3 unitPosition = unitData.Position;
                 do
                 {
-                    var targetStaticData = unitCampLookup[quadrantData.entity];
-                    if (unitData.UnitCamp == targetStaticData.unitCamp)
+                    if (unitData.UnitCamp == quadrantData.unitCamp)
                     {
                         continue;
                     }

@@ -210,8 +210,13 @@ public partial class LogicBattleSystem
         battleComputeTimer += deltaTicks;
 
         //两次Update之间的间隔时间可能超过一次COMPUTE_DELTA_TICKS，够一次，计算一次
+        bool needUpdate = false;
         while (battleComputeTimer > COMPUTE_DELTA_TICKS)
         {
+            battleComputeTimer -= COMPUTE_DELTA_TICKS;
+            needUpdate = true;
+        }
+        if (needUpdate) {
             for (int i = 0; i < timeScale; i++)
             {
                 currentFrameOutputData = outputDataFramePool.GetInstance();
@@ -222,28 +227,20 @@ public partial class LogicBattleSystem
                 if (OutputData.isEnd == false)
                 {
                     SpawnBattleUnit();
-                    spawnUnitSystemHandle.Update(World.DefaultGameObjectInjectionWorld.Unmanaged);
-                    quadrantSystemHandle.Update(World.DefaultGameObjectInjectionWorld.Unmanaged);
-                    unitStateSystemHandle.Update(World.DefaultGameObjectInjectionWorld.Unmanaged);
-                    findTargetSystemHandle.Update(World.DefaultGameObjectInjectionWorld.Unmanaged);
-                    unitSyncSystemHandle.Update(World.DefaultGameObjectInjectionWorld.Unmanaged);
+                    var world = World.DefaultGameObjectInjectionWorld.Unmanaged;
+                    spawnUnitSystemHandle.Update(world);
+                    quadrantSystemHandle.Update(world);
+                    unitStateSystemHandle.Update(world);
+                    findTargetSystemHandle.Update(world);
+                    unitSyncSystemHandle.Update(world);
                     BattleUnitCompute();
                     BulletCompute();
                     SkillCompute();
                 }
                 outputDatasFrame.Enqueue(currentFrameOutputData);
-                if (OutputData.isEnd)
-                {
-                    break;
-                }
                 battleTimer += COMPUTE_DELTA_TICKS;
                 battleTimerMS = battleTimer / TICKS_TO_MILLISECOND;
             }
-            if (OutputData.isEnd)
-            {
-                break;
-            }
-            battleComputeTimer -= COMPUTE_DELTA_TICKS;
         }
     }
 
