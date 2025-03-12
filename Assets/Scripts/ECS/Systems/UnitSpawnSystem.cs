@@ -1,7 +1,8 @@
 using FixPointUnity;
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public readonly partial struct SpawnUnitAspect : IAspect
 {
@@ -34,16 +35,6 @@ public partial struct UnitSpawnSystem : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
-        var archeType = state.EntityManager.CreateArchetype(
-            typeof(HP),
-            typeof(Position),
-            typeof(UnitStatus),
-            typeof(AttackTimer),
-            typeof(AttackPower),
-            typeof(AttackPerformed),
-            typeof(UnitStaticData),
-            typeof(BattleUnitReference));
-
         var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
         var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
 
@@ -66,7 +57,6 @@ public partial struct UnitSpawnSystem : ISystem
 
                         for (int index = 0; index < count; index++)
                         {
-                            var entity = ecb.CreateEntity(archeType);
                             F64 lerpValue;
                             if (count > ColumnCapactiy)
                             {
@@ -85,40 +75,47 @@ public partial struct UnitSpawnSystem : ISystem
                             var position = new Position();
                             var status = new UnitStatus();
                             var attackPower = new AttackPower();
+                            var attackTimer = new AttackTimer();
+                            var attackPerformed = new AttackPerformed();
+                            var localTranform = new LocalTransform();
+                            localTranform.Scale = 1;
+                            var battleUnit = ecb.Instantiate(prefabData.entityPrefab);
 
                             if (data.isAttacker)
                             {
                                 staticData.unitCamp = UnitCamp.Attacker;
                                 position.value = F64Vec3.Lerp(aspect.battleFieldData.ValueRO.attackerSpawnPointA, aspect.battleFieldData.ValueRO.attackerSpawnPointB, lerpValue);
+                                localTranform.Rotation = quaternion.LookRotation(new float3(1, 0, 0), new float3(0, 1, 0));
                             }
                             else
                             {
                                 staticData.unitCamp = UnitCamp.Defender;
                                 position.value = F64Vec3.Lerp(aspect.battleFieldData.ValueRO.defenderSpawnPointB, aspect.battleFieldData.ValueRO.defenderSpawnPointA, lerpValue);
+                                localTranform.Rotation = quaternion.LookRotation(new float3(-1, 0, 0), new float3(0, 1, 0));
                             }
+                            localTranform.Position = position.value.ToVector3();
 
                             position.value.X /= 3;
 
-                            var battleUnit = Object.Instantiate(prefabData.prefab).GetComponent<BattleUnit>();
-                            //var battleUnit = BattleSystem.BattleField.SpawnBattleUnit(data.isAttacker, id, position.value);
-                            battleUnit.Initialize(id, position.value.ToVector3(), data.isAttacker);
-
                             hp.value = 3;
                             attackPower.value = 1;
-                            status.value = BattleUnitState.MoveToBasecamp;
+                            status.value = BattleUnitState.Idle;
+                            staticData.id = id;
                             staticData.moveSpeed = F64.FromInt(5);
-                            staticData.volumeRadius = F64.FromFloat(0.5f);
+                            staticData.volumeRadius = F64.FromFloat(0.4f);
                             staticData.attackRadius = F64.FromInt(1);
                             staticData.attackTime = F64.FromFloat(0.667f);
                             staticData.attackPreTime = F64.FromFloat(0.3f);
                             staticData.attackWaitTime = F64.FromInt(1);
 
-                            ecb.SetComponent(entity, hp);
-                            ecb.SetComponent(entity, position);
-                            ecb.SetComponent(entity, status);
-                            ecb.SetComponent(entity, attackPower);
-                            ecb.SetComponent(entity, staticData);
-                            ecb.SetComponent(entity, new BattleUnitReference() { battleUnit = battleUnit });
+                            ecb.AddComponent(battleUnit, hp);
+                            ecb.AddComponent(battleUnit, position);
+                            ecb.AddComponent(battleUnit, status);
+                            ecb.AddComponent(battleUnit, attackPower);
+                            ecb.AddComponent(battleUnit, staticData);
+                            ecb.AddComponent(battleUnit, attackTimer);
+                            ecb.AddComponent(battleUnit, attackPerformed);
+                            ecb.SetComponent(battleUnit, localTranform);
                         }
                         break;
                     }

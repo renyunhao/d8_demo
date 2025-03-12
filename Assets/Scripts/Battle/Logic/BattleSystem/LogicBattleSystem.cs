@@ -141,6 +141,7 @@ public partial class LogicBattleSystem
     private SystemHandle unitStateSystemHandle;
     private SystemHandle findTargetSystemHandle;
     private SystemHandle unitSyncSystemHandle;
+    private SystemHandle collisionSystemHandle;
 
     public HashSet<LogicBattleUnit> ActiveAttackerList => aliveAttackerSet;
     public HashSet<LogicBattleUnit> ActiveDefenderList => aliveDefenderSet;
@@ -185,12 +186,14 @@ public partial class LogicBattleSystem
         unitStateSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<UnitStateSystem>();
         findTargetSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<FindTargetSystem>();
         unitSyncSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<UnitSyncSystem>();
+        collisionSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<CollisionSystem>();
         logicSystemGroup = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<LogicSystemGroup>();
         logicSystemGroup.RemoveSystemFromUpdateList(spawnUnitSystemHandle); //关掉System的自动Update，改为手动调用Update
         logicSystemGroup.RemoveSystemFromUpdateList(quadrantSystemHandle); //关掉System的自动Update，改为手动调用Update
         logicSystemGroup.RemoveSystemFromUpdateList(unitStateSystemHandle); //关掉System的自动Update，改为手动调用Update
         logicSystemGroup.RemoveSystemFromUpdateList(findTargetSystemHandle); //关掉System的自动Update，改为手动调用Update
         logicSystemGroup.RemoveSystemFromUpdateList(unitSyncSystemHandle); //关掉System的自动Update，改为手动调用Update
+        logicSystemGroup.RemoveSystemFromUpdateList(collisionSystemHandle); //关掉System的自动Update，改为手动调用Update
     }
 
     #region 战斗阶段
@@ -231,6 +234,7 @@ public partial class LogicBattleSystem
                     spawnUnitSystemHandle.Update(world);
                     quadrantSystemHandle.Update(world);
                     unitStateSystemHandle.Update(world);
+                    collisionSystemHandle.Update(world);
                     findTargetSystemHandle.Update(world);
                     unitSyncSystemHandle.Update(world);
                     BattleUnitCompute();

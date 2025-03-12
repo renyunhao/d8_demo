@@ -31,14 +31,14 @@ public partial struct FindTargetSystem : ISystem
 {
     public void OnUpdate(ref SystemState state)
     {
-        var query = SystemAPI.QueryBuilder().WithAll<NeedFindTargetTag>().Build();
+        var query = SystemAPI.QueryBuilder().WithAspect<UnitDataAspect>().WithAll<NeedFindTargetTag>().Build();
 
         NativeParallelMultiHashMap<int, Entity> targetHashMap = new NativeParallelMultiHashMap<int, Entity>(query.CalculateEntityCount(), Allocator.TempJob);
         var burstJobHandle = new FindTargetBurstJob()
         {
             quadrantMultiHashMap = QuadrantSystem.quadrantMultiHashMap,
             targetHashMap = targetHashMap.AsParallelWriter(),
-        }.ScheduleParallel(state.Dependency);
+        }.ScheduleParallel(query, state.Dependency);
 
         burstJobHandle.Complete();
 
@@ -74,7 +74,7 @@ public partial struct FindTargetSystem : ISystem
         [ReadOnly] public NativeParallelMultiHashMap<int, QuadrantData> quadrantMultiHashMap;
         public NativeParallelMultiHashMap<int, Entity>.ParallelWriter targetHashMap;
 
-        public void Execute([ReadOnly] UnitDataAspect unitData, [ReadOnly] NeedFindTargetTag needFindTargetTag)
+        public void Execute(UnitDataAspect unitData, in NeedFindTargetTag needFindTargetTag)
         {
             int hashMapKey = QuadrantSystem.GetPositionHashMapKey(unitData.Position);
 

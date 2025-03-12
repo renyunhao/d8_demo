@@ -1,0 +1,29 @@
+{
+  "name": "com.animationcooker",
+  "version": "1.0.10",
+  "displayName": "Animation Cooker",
+  "description": "A GPU vertex animation texture baking package made specifically for DOTS.",
+  "unity": "6.0",
+  "documentationUrl": "https://gitlab.com/lclemens/animationcooker",
+  "changelogUrl": "https://gitlab.com/lclemens/animationcooker/-/blob/master/changelog.md",
+  "licensesUrl": "https://gitlab.com/lclemens/animationcooker/-/blob/master/license.md",
+  "dependencies": {
+    "com.unity.entities": "1.2.3"
+  },
+ "keywords": ["DOTS","Vertex", "Animation", "GPU", "Texture", "Bake"],
+  "author": {
+    "name": "Luke Clemens",
+    "email": "lclemens@gmail.com",
+    "url": "https://gitlab.com/lclemens"
+  },
+  "samples": [{
+     "displayName": "Example Scene",
+     "description": "An example scene with a spawner for benchmarking (requires render-pipelines.universal, entities.graphics, tmpro, and unity-mesh-simplifier).",
+     "path": "Samples~/ExampleScene"
+   },{
+	 "displayName": "URP 14 Shaders",
+     "description": "An optional zip file containing URP14 shaders to replace the URP 17 ones.",
+     "path": "Samples~/URP14Shader"
+   }],
+   "type": "library"
+}

@@ -52,7 +52,6 @@ public partial class BattleSystem
                 {
                     updateAttackingWaitIk.Remove(battleUnit);
                 }
-                battleField.RemoveBattleUnit(battleUnit);
                 attackerList.Remove(battleUnit);
                 attackerDic.Remove(index);
                 i--;

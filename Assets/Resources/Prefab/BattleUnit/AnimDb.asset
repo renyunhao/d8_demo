@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5db671430d248e499a2437884636ff0, type: 3}
+  m_Name: AnimDb
+  m_EditorClassIdentifier: 
+  Models:
+  - ModelName: FylingDemonPBRDefault
+    Skins:
+    - SkinClips:
+      - BeginFrame: 0
+        EndFrame: 15
+      - BeginFrame: 16
+        EndFrame: 26
+      - BeginFrame: 27
+        EndFrame: 35
+      - BeginFrame: 36
+        EndFrame: 48
+      Width: 512
+      Height: 512
+      Interval: 0.083333336
+      Pow2: 9
+      FrameRate: 12
+      VertCount: 4892
+    Clips:
+    - ClipName: Idle
+      Length: 1.3333334
+    - ClipName: Move
+      Length: 0.9333334
+    - ClipName: Die
+      Length: 0.7666667
+    - ClipName: Attack
+      Length: 1.1333334
+  - ModelName: CrabMonsterPBRDefault
+    Skins:
+    - SkinClips:
+      - BeginFrame: 0
+        EndFrame: 67
+      - BeginFrame: 68
+        EndFrame: 78
+      - BeginFrame: 79
+        EndFrame: 90
+      - BeginFrame: 91
+        EndFrame: 99
+      Width: 512
+      Height: 512
+      Interval: 0.05882353
+      Pow2: 9
+      FrameRate: 17
+      VertCount: 2590
+    Clips:
+    - ClipName: Idle
+      Length: 4
+    - ClipName: Attack
+      Length: 0.6666667
+    - ClipName: Die
+      Length: 0.73333335
+    - ClipName: Move
+      Length: 0.53333336

@@ -1,5 +1,8 @@
+using AnimCooker;
 using FixPointUnity;
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
 
 /// <summary>
 /// 生命值
@@ -52,6 +55,10 @@ public struct AttackPerformed : IComponentData
 public struct UnitStaticData : IComponentData
 {
     /// <summary>
+    /// 单位ID
+    /// </summary>
+    public int id;
+    /// <summary>
     /// 所属阵营
     /// </summary>
     public UnitCamp unitCamp;
@@ -85,12 +92,14 @@ public readonly partial struct UnitDataAspect : IAspect
 {
     public readonly Entity entity;
 
+    private readonly RefRW<LocalTransform> localTransform;
     private readonly RefRW<HP> hp;
     private readonly RefRW<Position> position;
     private readonly RefRW<UnitStatus> currentState;
     private readonly RefRW<AttackTimer> attackTimer;
     private readonly RefRW<AttackPower> attackPower;
     private readonly RefRW<AttackPerformed> attackPerformed;
+    private readonly RefRW<AnimationCmdData> animationCmdData;
 
     private readonly RefRO<UnitStaticData> staticData;
 
@@ -104,7 +113,16 @@ public readonly partial struct UnitDataAspect : IAspect
     public F64Vec3 Position
     {
         get => position.ValueRO.value;
-        set => position.ValueRW.value = value;
+        set {
+            position.ValueRW.value = value;
+            localTransform.ValueRW.Position = value.ToVector3();
+        }
+    }
+
+    public quaternion Rotation
+    {
+        get => localTransform.ValueRO.Rotation;
+        set => localTransform.ValueRW.Rotation = value;
     }
 
     public BattleUnitState CurrentState
@@ -129,6 +147,23 @@ public readonly partial struct UnitDataAspect : IAspect
     {
         get => attackPerformed.ValueRO.value;
         set => attackPerformed.ValueRW.value = value;
+    }
+
+    public CrabMonsterPBRDefault AnimationClip
+    {
+        get => (CrabMonsterPBRDefault)animationCmdData.ValueRO.ClipIndex;
+        set
+        {
+            if (value == CrabMonsterPBRDefault.Move || value == CrabMonsterPBRDefault.Idle)
+            {
+                animationCmdData.ValueRW.Cmd = AnimationCmd.SetPlayForever;
+            }
+            else
+            {
+                animationCmdData.ValueRW.Cmd = AnimationCmd.PlayOnce;
+            }
+            animationCmdData.ValueRW.ClipIndex = (short)value;
+        }
     }
 
     public F64 AttackTime => staticData.ValueRO.attackTime;

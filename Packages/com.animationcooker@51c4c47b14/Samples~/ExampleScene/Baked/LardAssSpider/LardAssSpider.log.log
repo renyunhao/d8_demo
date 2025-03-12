@@ -1,0 +1,27 @@
+
+Model: LardAssSpider
+Skin: 0, Root Bone: Master
+  7fps, 256x256, 1048KB
+Skin: 1, Root Bone: Master
+  3fps, 128x128, 131KB
+Skin: 2, Root Bone: Master
+  2fps, 128x64, 65KB
+Play Shader: AnimationCooker/VtxAnimSimpleLit
+
+Enum Declaration: enabled
+Reset Rotation Before Bake: disabled
+Reset Position Before Bake: disabled
+Reset Scale Before Bake: disabled
+Ignore Bone Meshes: disabled
+Bone Adjust: disabled
+
+Post Domain Reload: disabled
+
+R10G11B11: enabled
+
+
+Started: 10/1/2024 2:08:28 PM
+Art files were saved to: Assets/Samples/ExampleScene/Baked/LardAssSpider
+Animation enums saved to: Assets/Samples/ExampleScene/Baked/AnimEnums.cs
+Baked Prefab saved to: Assets/Samples/ExampleScene/Baked/LardAssSpider.prefab
+Completed in 3.872 seconds.

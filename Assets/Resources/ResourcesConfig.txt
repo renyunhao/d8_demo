@@ -4,7 +4,12 @@ Red|Material|Material|.mat
 UIGray|Material|Material|.mat
 Basecamp|GameObject|Prefab|.prefab
 BattleField|GameObject|Prefab|.prefab
+AnimDb|AnimDbSo|Prefab/BattleUnit|.asset
 BattleUnit_1001|GameObject|Prefab/BattleUnit|.prefab
+Blue|Texture2D|Prefab/BattleUnit/CrabMonsterPBRDefault|.png
+CrabMonsterPBRDefault0.mesh|Mesh|Prefab/BattleUnit/CrabMonsterPBRDefault|.asset
+CrabMonsterPBRDefault0.nmlTex|Texture2D|Prefab/BattleUnit/CrabMonsterPBRDefault|.exr
+CrabMonsterPBRDefault0.posTex|Texture2D|Prefab/BattleUnit/CrabMonsterPBRDefault|.exr
 PerformanceBrowser|GameObject|Prefab|.prefab
 BattleUI|GameObject|Prefab/UI/BattleUI|.prefab
 LoginUI|GameObject|Prefab/UI/LoginUI|.prefab

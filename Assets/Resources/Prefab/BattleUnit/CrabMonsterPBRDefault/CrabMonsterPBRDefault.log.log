@@ -1,0 +1,22 @@
+
+Model: CrabMonsterPBRDefault
+Skin: 0, Root Bone: Body
+  17fps, 512x512, 4194KB
+Play Shader: AnimationCooker/VtxAnimSimpleLit
+
+Enum Declaration: enabled
+Reset Rotation Before Bake: disabled
+Reset Position Before Bake: enabled
+Reset Scale Before Bake: enabled
+Ignore Bone Meshes: disabled
+Bone Adjust: disabled
+
+Post Domain Reload: enabled
+R10G11B11: enabled
+
+
+Started: 3/12/2025 2:46:13 PM
+Art files were saved to: Assets/Resources/Prefab/BattleUnit/CrabMonsterPBRDefault
+Animation enums saved to: Assets/Scripts/AnimationBaked/AnimEnums.cs
+Baked Prefab saved to: Assets/ResourcesRaw/Prefab/AnimationBaked//CrabMonsterPBRDefault.prefab
+Completed in 5.686 seconds.

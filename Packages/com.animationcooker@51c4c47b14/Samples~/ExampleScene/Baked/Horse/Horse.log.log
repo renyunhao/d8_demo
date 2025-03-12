@@ -1,0 +1,27 @@
+
+Model: Horse
+Skin: 0, Root Bone: Hips
+  6fps, 256x256, 524KB
+Skin: 1, Root Bone: Hips
+  3fps, 128x128, 131KB
+Skin: 2, Root Bone: Hips
+  1fps, 64x64, 32KB
+Play Shader: AnimationCooker/VtxAnimSimpleLit
+
+Enum Declaration: enabled
+Reset Rotation Before Bake: disabled
+Reset Position Before Bake: disabled
+Reset Scale Before Bake: disabled
+Ignore Bone Meshes: disabled
+Bone Adjust: disabled
+
+Post Domain Reload: disabled
+
+R10G11B11: enabled
+
+
+Started: 10/1/2024 2:08:53 PM
+Art files were saved to: Assets/Samples/ExampleScene/Baked/Horse
+Animation enums saved to: Assets/Samples/ExampleScene/Baked/AnimEnums.cs
+Baked Prefab saved to: Assets/Samples/ExampleScene/Baked/Horse.prefab
+Completed in 2.7911 seconds.
