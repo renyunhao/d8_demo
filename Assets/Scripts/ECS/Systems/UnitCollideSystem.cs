@@ -2,16 +2,14 @@ using FixPointUnity;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 [UpdateInGroup(typeof(LogicSystemGroup))]
-partial struct CollisionSystem : ISystem
+partial struct UnitCollideSystem : ISystem
 {
     public void OnUpdate(ref SystemState state)
     {
-        var query = SystemAPI.QueryBuilder().WithAspect<UnitDataAspect>().Build();
+        var query = SystemAPI.QueryBuilder().WithAspect<UnitDataAspect>().WithNone<UnitDeadTag>().Build();
 
-        NativeParallelMultiHashMap<int, Entity> targetHashMap = new NativeParallelMultiHashMap<int, Entity>(query.CalculateEntityCount(), Allocator.TempJob);
         state.Dependency = new CollisionJob()
         {
             quadrantMultiHashMap = QuadrantSystem.quadrantMultiHashMap,
@@ -59,10 +57,17 @@ partial struct CollisionSystem : ISystem
                 {
                     if (unitData.entity.Index == quadrantData.entity.Index)
                     {
+                        //先排除自己
                         continue;
                     }
                     if (unitData.UnitCamp != quadrantData.unitCamp)
                     {
+                        //只和同阵营的人发生碰撞计算
+                        continue;
+                    }
+                    if (unitData.CurrentState == BattleUnitState.Attacking || unitData.CurrentState == BattleUnitState.AttackWait)
+                    {
+                        //攻击状态的单位不参与碰撞计算
                         continue;
                     }
                     F64 distance = F64Vec3.DistanceFastest(unitPosition, quadrantData.position);

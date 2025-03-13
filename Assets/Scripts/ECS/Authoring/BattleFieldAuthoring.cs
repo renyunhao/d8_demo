@@ -23,7 +23,6 @@ public class BattleFieldBaker : Baker<BattleFieldAuthoring>
         var battleFieldEntity = GetEntity(TransformUsageFlags.Dynamic);
         BattleSystem.Initialize(authoring.GetComponent<BattleField>());
 
-        Debug.Log("new BattleFieldBaker");
         AddComponent(battleFieldEntity, new BattleFieldComponentData
         {
             attackerSpawnPointA = authoring.attackerBasecamp.battleUnitSpawnPointA.transform.position.ToF64Vec3(),

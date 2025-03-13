@@ -186,7 +186,7 @@ public partial class LogicBattleSystem
         unitStateSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<UnitStateSystem>();
         findTargetSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<FindTargetSystem>();
         unitSyncSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<UnitSyncSystem>();
-        collisionSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<CollisionSystem>();
+        collisionSystemHandle = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<UnitCollideSystem>();
         logicSystemGroup = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<LogicSystemGroup>();
         logicSystemGroup.RemoveSystemFromUpdateList(spawnUnitSystemHandle); //关掉System的自动Update，改为手动调用Update
         logicSystemGroup.RemoveSystemFromUpdateList(quadrantSystemHandle); //关掉System的自动Update，改为手动调用Update

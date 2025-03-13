@@ -9,25 +9,24 @@ public partial struct CampMaterialApplyed : IComponentData { }
 partial class SetCampMaterialSystem : SystemBase
 {
     private Dictionary<int, Dictionary<Material, BatchMaterialID>> materialMapping;
-    private EntitiesGraphicsSystem hybridRendererSystem;
+    private EntitiesGraphicsSystem entitiesGraphicSystem;
 
     protected override void OnCreate()
     {
-        Debug.Log("SetCampMaterialSystem OnCreate");
         materialMapping = new Dictionary<int, Dictionary<Material, BatchMaterialID>>();
     }
 
     protected override void OnUpdate()
     {
-        hybridRendererSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<EntitiesGraphicsSystem>();
+        entitiesGraphicSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<EntitiesGraphicsSystem>();
         foreach (var prefabData in SystemAPI.Query<BattleUnitPrefabData>())
         {
             if (materialMapping.TryGetValue(prefabData.id, out var dict) == false)
             {
                 dict = new Dictionary<Material, BatchMaterialID>();
+                dict[prefabData.attackerMaterial] = entitiesGraphicSystem.RegisterMaterial(prefabData.attackerMaterial);
+                dict[prefabData.defenderMaterial] = entitiesGraphicSystem.RegisterMaterial(prefabData.defenderMaterial);
                 materialMapping[prefabData.id] = dict;
-                dict[prefabData.attackerMaterial] = hybridRendererSystem.RegisterMaterial(prefabData.attackerMaterial);
-                dict[prefabData.defenderMaterial] = hybridRendererSystem.RegisterMaterial(prefabData.defenderMaterial);
             }
         }
 

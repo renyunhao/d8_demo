@@ -143,7 +143,7 @@ public partial struct UnitStateSystem : ISystem
                     foreach (var target in hasTarget.targets)
                     {
                         var targetData = state.EntityManager.GetAspect<UnitDataAspect>(target);
-                        //DoDamage(target, targetData, unitData, ecb);
+                        DoDamage(target, targetData, unitData, ecb);
                     }
                 }
             }

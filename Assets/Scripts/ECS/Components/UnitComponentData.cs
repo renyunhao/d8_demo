@@ -187,9 +187,4 @@ public enum UnitCamp
     Defender
 }
 
-public class BattleUnitReference : IComponentData
-{
-    public BattleUnit battleUnit;
-}
-
 public struct UnitDeadTag : IComponentData { }

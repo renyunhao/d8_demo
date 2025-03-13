@@ -1,4 +1,3 @@
-using FixPointUnity;
 using System;
 using Unity.Entities;
 using UnityEngine;
@@ -26,7 +25,6 @@ public class BattleUnitPrefabBaker : Baker<BattleUnitPrefabAuthoring>
         var prefabContainerEntity = GetEntity(TransformUsageFlags.Dynamic);
         int subIndex = authoring.prefab.name.IndexOf("_");
         int id = Convert.ToInt32(authoring.prefab.name.Substring(subIndex + 1));
-        Debug.Log($"BattleUnitPrefabBaker id {id}");
         AddComponentObject(prefabContainerEntity, new BattleUnitPrefabData
         {
             id = id,
